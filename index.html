@@ -1187,8 +1187,8 @@ function formatInvoiceDate(v){const x=String(v||"");if(/^\d{4}-\d{2}-\d{2}$/.tes
 function nextBillNumber(){
   const nums=[...db.sales,...db.amcs,...db.services].map(x=>String(x.invoiceNo||x.serviceInvoiceNo||"").replace(/^PWS(?:-AMC|-SVC)?-/i,"").trim()).map(x=>/^\d+$/.test(x)&&Number(x)>=1&&Number(x)<=999999?Number(x):0);
   const maxExisting=Math.max(0,...nums);
-  db.invoiceCounter=Math.max(701,Number(db.invoiceCounter||701),maxExisting)+1;
-  return String(db.invoiceCounter);
+  db.invoiceCounter=maxExisting+1;
+  return String(db.invoiceCounter).padStart(3,"0");
 }
 function openInvoice(saleId){
   const s=db.sales.find(x=>x.id===saleId);if(!s){toast("Sale not found");return}
